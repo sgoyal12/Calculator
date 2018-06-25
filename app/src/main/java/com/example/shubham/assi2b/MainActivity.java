@@ -13,7 +13,7 @@ TextView tv1,tv2;
 double a,b;
 char op=' ';
         int e1=0;
-int d=0,e=0,f=0;
+int d=0,e=0,f=0,negative=0,result=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +52,10 @@ int d=0,e=0,f=0;
         btne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                result=0;
+                if(negative==1){
+                    b=-b;
+                    negative=0;}
                 if(op=='+')
                 {
                   a=a+b;
@@ -104,11 +107,16 @@ int d=0,e=0,f=0;
             public void onClick(View view) {
                 f++;
                 e1=e;
-
+               if(op!=' '&&result==0) {
+                   negative = 1;
+                   tv1.setText(tv1.getText().toString()+"-");
+               }
+                else{
                 btne.callOnClick();
                 op='-';
+                   tv1.setText(tv1.getText().toString()+op);}
                 d++;
-                tv1.setText(tv1.getText().toString()+op);
+
                 e=0;
 
             }
@@ -194,11 +202,14 @@ int d=0,e=0,f=0;
                         b = (b - (b % 10)) / 10;
                     }
                     else
-
                         {
-                          op=' ';
+                          if(s.charAt(s.length()-1)!='-'||negative==0){
+                            op=' ';
                           d--;
-                          e=e1;
+                          e=e1;}
+                          else{
+                              negative=0;
+                        }
                         }
 
                     }
@@ -242,8 +253,10 @@ int d=0,e=0,f=0;
         {
             if (d == 0)
                 a = 10 * a + y;
-            else
+            else {
                 b = 10 * b + y;
+                result = 1;
+            }
         }
         else
         {
@@ -255,6 +268,7 @@ int d=0,e=0,f=0;
             else
             {
                 b=b+y/Math.pow(10,e);
+                result=1;
             }
 
             e++;
@@ -265,6 +279,8 @@ int d=0,e=0,f=0;
     public void hintSet()
     {
         double c=a;
+        if(negative==1)
+            b=-b;
         if(op=='+')
         {
            c = a+b;
@@ -281,7 +297,8 @@ int d=0,e=0,f=0;
         {
             c=a/b;
         }
-
+        if(negative==1)
+            b=-b;
         tv2.setText(""+c);
     }
 
